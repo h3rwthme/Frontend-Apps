@@ -1,5 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
-  <rect width="32" height="32" rx="8" fill="#006e2f"/>
-  <text x="16" y="22" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="800" font-size="18" fill="#ffffff">F</text>
-  <rect x="6" y="24" width="20" height="3" rx="1.5" fill="#22c55e"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 48 48" fill="none">
+  <defs>
+    <linearGradient id="fa-fav-grad" x1="4" y1="4" x2="44" y2="44" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#006E2F" />
+      <stop offset="100%" stop-color="#10B981" />
+    </linearGradient>
+  </defs>
+  <path d="M24 4L42 12V32L24 44L6 32V12L24 4Z" fill="url(#fa-fav-grad)" />
+  <path d="M18 20L13 24L18 28" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M30 20L35 24L30 28" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M26 18L22 30" stroke="#34D399" stroke-width="3.5" stroke-linecap="round"/>
 </svg>
