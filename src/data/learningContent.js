@@ -11,15 +11,100 @@ const baseCss = `:root {
 const makeCode = (html, next, css) => ({ html, next, css: `${baseCss}\n\n${css}` })
 
 export const LEARNING_CATEGORIES = [
-  { id: 'all', label: 'Semua', icon: 'grid_view' },
-  { id: 'components', label: 'Komponen UI', icon: 'layers' },
-  { id: 'ux', label: 'Dasar UI/UX', icon: 'auto_awesome' },
-  { id: 'html-css', label: 'HTML & CSS', icon: 'html' },
-  { id: 'nextjs', label: 'Next.js', icon: 'data_object' },
-  { id: 'a11y', label: 'Aksesibilitas', icon: 'verified' },
+  { id: 'all', label: 'Semua Materi', icon: 'grid_view' },
+  { id: 'layout', label: '1. Layout & Struktur Web', icon: 'web' },
+  { id: 'html-css', label: '2. HTML & CSS Layout', icon: 'html' },
+  { id: 'ux', label: '3. Dasar UI/UX', icon: 'auto_awesome' },
+  { id: 'components', label: '4. Komponen UI', icon: 'layers' },
+  { id: 'a11y', label: '5. Aksesibilitas Web (A11y)', icon: 'verified' },
+  { id: 'nextjs', label: '6. Next.js & React Architecture', icon: 'data_object' },
 ]
 
 export const LEARNING_MODULES = [
+  {
+    id: 'navbar', title: 'Navbar & Top Header', category: 'layout', icon: 'web', level: 'Dasar', duration: '15 menit',
+    summary: 'Navigasi atas tempat logo brand, tautan menu utama, pencarian, dan tombol aksi berada.',
+    usage: 'Tampilkan di setiap halaman web publik dengan posisi sticky atau fixed di bagian paling atas.',
+    anatomy: ['Brand Logo / Monogram', 'Navigation Links (Desktop)', 'Search / Action CTA', 'Mobile Hamburger Toggle'],
+    principles: ['Gunakan tag semantik <header> dan <nav>.', 'Responsif (berubah jadi drawer/hamburger di mobile).', 'Beri indikator visual jelas pada tautan aktif.'],
+    code: makeCode(
+      `<header class="navbar">\n  <a href="/" class="brand">FrontEnd</a>\n  <nav class="nav-links">\n    <a href="/" class="active">Beranda</a>\n    <a href="/materi">Materi</a>\n    <a href="/latihan">Latihan</a>\n  </nav>\n  <button class="btn-cta">Masuk</button>\n</header>`,
+      `import Link from 'next/link'\n\nexport default function Navbar() {\n  return (\n    <header className="navbar">\n      <Link href="/" className="brand">FrontEnd</Link>\n      <nav className="navLinks">\n        <Link href="/" className="active">Beranda</Link>\n        <Link href="/materi">Materi</Link>\n      </nav>\n      <button className="btnCta">Masuk</button>\n    </header>\n  )\n}`,
+      `.navbar { display: flex; align-items: center; justify-content: space-between; padding: 14px 24px; background: #ffffff; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50; }\n.nav-links { display: flex; gap: 16px; }\n.nav-links a { color: var(--muted); text-decoration: none; font-weight: 600; }\n.nav-links a.active { color: var(--primary); font-weight: 700; }`
+    ),
+  },
+  {
+    id: 'grid-layout', title: 'Grid Layout System', category: 'layout', icon: 'grid_on', level: 'Menengah', duration: '20 menit',
+    summary: 'Sistem tata letak 12-kolom responsif untuk menyusun elemen web secara terstruktur dan fleksibel.',
+    usage: 'Gunakan CSS Grid untuk membagi ruang halaman menjadi kolom & baris (Header, Sidebar, Main Content, Cards).',
+    anatomy: ['Container Max-Width', '12 Columns Grid Tracks', 'Gutter / Gap Spacing', 'Responsive Breakpoints (Mobile, Tablet, Desktop)'],
+    principles: ['Bagi layar menjadi 12 kolom untuk fleksibilitas pembagian layout (6:6, 8:4, 4:4:4).', 'Gunakan minmax(0, 1fr) untuk mencegah kontainer overflow.', 'Jaga konsistensi jarak gap antar elemen.'],
+    code: makeCode(
+      `<div class="grid-container">\n  <header class="col-12">Header (12 Kolom)</header>\n  <aside class="col-4">Sidebar (4 Kolom)</aside>\n  <main class="col-8">Main Content (8 Kolom)</main>\n  <footer class="col-12">Footer (12 Kolom)</footer>\n</div>`,
+      `export default function WebLayoutGrid() {\n  return (\n    <div className="gridContainer">\n      <header className="col12">Header</header>\n      <aside className="col4">Sidebar</aside>\n      <main className="col8">Konten Utama</main>\n    </div>\n  )\n}`,
+      `.grid-container { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; width: 100%; }\n.col-12 { grid-column: span 12; }\n.col-8 { grid-column: span 8; }\n.col-4 { grid-column: span 4; }\n@media (max-width: 768px) { .col-8, .col-4 { grid-column: span 12; } }`
+    ),
+  },
+  {
+    id: 'sidebar-layout', title: 'Sidebar Navigation', category: 'layout', icon: 'side_navigation', level: 'Menengah', duration: '16 menit',
+    summary: 'Panel navigasi vertikal di sisi kiri halaman untuk aplikasi web, dashboard, atau dokumentasi.',
+    usage: 'Cocok untuk aplikasi dengan banyak menu tingkat lanjut seperti Admin Dashboard dan platform belajar.',
+    anatomy: ['Brand Header', 'Vertical Navigation Menu', 'Active Indicator Pill', 'User Profile Card'],
+    principles: ['Status aktif harus sangat kontras.', 'Gunakan elemen <aside> dan <nav>.', 'Menyediakan toggle collapse untuk menambah ruang baca.'],
+    code: makeCode(
+      `<aside class="sidebar">\n  <div class="logo">Academy</div>\n  <nav className="nav-vertical">\n    <a class="active" href="/">Dashboard</a>\n    <a href="/materi">Materi</a>\n    <a href="/pengaturan">Pengaturan</a>\n  </nav>\n</aside>`,
+      `import Link from 'next/link'\n\nexport default function Sidebar() {\n  return (\n    <aside className="sidebar">\n      <div className="logo">Academy</div>\n      <nav className="navVertical">\n        <Link href="/" className="active">Dashboard</Link>\n        <Link href="/materi">Materi</Link>\n      </nav>\n    </aside>\n  )\n}`,
+      `.sidebar { width: 240px; height: 100vh; padding: 20px; background: #f8f9ff; border-right: 1px solid var(--border); display: flex; flex-direction: column; gap: 20px; }\n.nav-vertical { display: flex; flex-direction: column; gap: 8px; }\n.nav-vertical a.active { background: rgba(0, 110, 47, 0.1); color: var(--primary); font-weight: 700; border-radius: 12px; }`
+    ),
+  },
+  {
+    id: 'footer-layout', title: 'Footer Layout', category: 'layout', icon: 'table_rows', level: 'Dasar', duration: '14 menit',
+    summary: 'Area penutup di paling bawah halaman berisi tautan navigasi sekunder, copyright, dan media sosial.',
+    usage: 'Tempatkan sitemap, kontak resmi, tautan kebijakan privasi, serta form langganan newsletter.',
+    anatomy: ['Brand & Bio Summary', 'Multi-column Navigation Links', 'Newsletter Form Input', 'Copyright & Social Icons'],
+    principles: ['Gunakan tag semantik <footer>.', 'Organisasikan link dalam kolom bertema.', 'Kontras warna teks penutup harus memenuhi standar A11y.'],
+    code: makeCode(
+      `<footer class="site-footer">\n  <div class="footer-grid">\n    <div><h4>FrontEnd Academy</h4><p>Platform belajar coding modern.</p></div>\n    <div><h4>Tautan</h4><a href="/materi">Materi</a><a href="/faq">FAQ</a></div>\n  </div>\n  <p class="copyright">© 2026 FrontEnd Academy</p>\n</footer>`,
+      `export default function Footer() {\n  return (\n    <footer className="siteFooter">\n      <div className="footerGrid">\n        <div><h4>FrontEnd Academy</h4></div>\n      </div>\n      <p>© 2026 FrontEnd Academy</p>\n    </footer>\n  )\n}`,
+      `.site-footer { padding: 40px 24px 20px; background: #121c28; color: #ffffff; }\n.footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 32px; }\n.copyright { border-top: 1px solid rgba(255,255,255,0.1); margin-top: 32px; padding-top: 16px; text-align: center; color: #94a3b8; font-size: 0.875rem; }`
+    ),
+  },
+  {
+    id: 'hero-section', title: 'Hero Section', category: 'layout', icon: 'featured_play_list', level: 'Dasar', duration: '15 menit',
+    summary: 'Komponen spanduk utama di bagian atas landing page untuk menarik perhatian dan menyampaikan nilai produk.',
+    usage: 'Tempatkan pada halaman depan utama (landing page) lengkap dengan H1 menonjol dan tombol Call To Action (CTA).',
+    anatomy: ['Kicker / Badge Eyebrow', 'Headline Utama (H1)', 'Deskripsi Singkat / Lead', 'Tombol CTA Utama & Sekunder', 'Visual Showcase'],
+    principles: ['Hanya boleh ada 1 tag <h1> per halaman.', 'Tombol CTA harus kontras dan langsung mengarah ke tujuan utama.', 'Teks judul harus dapat dibaca dengan jelas di atas latar belakang.'],
+    code: makeCode(
+      `<section class="hero">\n  <span class="badge">Platform Belajar</span>\n  <h1>Kuasai Frontend Development</h1>\n  <p>Pelajari HTML, CSS, React, dan Next.js secara hands-on.</p>\n  <div class="actions">\n    <button class="btn-primary">Mulai Gratis</button>\n    <button class="btn-secondary">Lihat Kurikulum</button>\n  </div>\n</section>`,
+      `export default function Hero() {\n  return (\n    <section className="hero">\n      <span className="badge">Platform Belajar</span>\n      <h1>Kuasai Frontend Development</h1>\n      <div className="actions">\n        <button className="btnPrimary">Mulai Gratis</button>\n      </div>\n    </section>\n  )\n}`,
+      `.hero { text-align: center; padding: 60px 24px; max-width: 800px; margin: 0 auto; }\n.hero h1 { font-size: 2.75rem; font-weight: 800; line-height: 1.15; margin: 16px 0; color: var(--text); }\n.hero p { font-size: 1.125rem; color: var(--muted); margin-bottom: 28px; }\n.hero .actions { display: flex; justify-content: center; gap: 12px; }`
+    ),
+  },
+  {
+    id: 'flexbox-layout', title: 'Flexbox Layout Patterns', category: 'layout', icon: 'view_agenda', level: 'Dasar', duration: '16 menit',
+    summary: 'Pola layout umum menggunakan Flexbox seperti Split Header, Card Rows, dan Media Object.',
+    usage: 'Gunakan Flexbox untuk menyusun elemen dalam 1 dimensi (baris atau kolom) dengan perataan yang presisi.',
+    anatomy: ['Flex Container', 'Flex Direction (row/column)', 'Justify Content', 'Align Items', 'Flex Gap'],
+    principles: ['Gunakan gap alih-alih margin antar anak.', 'Gunakan flex-wrap agar elemen turun dengan rapi di layar sempit.', 'Gunakan flex-1 pada elemen yang harus mengisi sisa ruang.'],
+    code: makeCode(
+      `<div class="media-object">\n  <img class="avatar" src="avatar.jpg" alt="User">\n  <div class="content">\n    <h4>Alex Rivera</h4>\n    <p>Pengembang Frontend</p>\n  </div>\n</div>`,
+      `export default function MediaObject() {\n  return (\n    <div className="mediaObject">\n      <img className="avatar" src="/avatar.png" alt="User" />\n      <div className="content"><h4>Alex Rivera</h4><p>Pengembang Frontend</p></div>\n    </div>\n  )\n}`,
+      `.media-object { display: flex; align-items: center; gap: 16px; padding: 16px; background: white; border-radius: 16px; border: 1px solid var(--border); }\n.media-object .content { min-width: 0; flex: 1; }`
+    ),
+  },
+  {
+    id: 'container-wrapper', title: 'Container & Breakpoints', category: 'layout', icon: 'aspect_ratio', level: 'Dasar', duration: '14 menit',
+    summary: 'Wadah batas lebar (max-width) dan responsif breakpoint untuk menjaga konten tetap seimbang di monitor lebar.',
+    usage: 'Bungkus seluruh area konten utama menggunakan container bermargin otomatis.',
+    anatomy: ['Max Width (1280px / 1440px)', 'Horizontal Padding', 'Margin Inline Auto', 'Media Breakpoints'],
+    principles: ['Jangan biarkan teks paragraf melebar di atas 75 karakter (max-width: 65ch).', 'Gunakan padding sisi (padding-inline) minimal 16px pada tampilan mobile.', 'Uji dari 320px hingga 4K display.'],
+    code: makeCode(
+      `<div class="page-container">\n  <main class="content-area">Konten Terbungkus Rapi</main>\n</div>`,
+      `export default function ContainerWrapper({ children }) {\n  return <div className="pageContainer">{children}</div>\n}`,
+      `.page-container { width: min(100% - 32px, 1200px); margin-inline: auto; }`
+    ),
+  },
   {
     id: 'button', title: 'Button', category: 'components', icon: 'play_arrow', level: 'Dasar', duration: '12 menit',
     summary: 'Aksi yang membantu pengguna maju, mengirim, menyimpan, atau mengubah sesuatu.',
@@ -498,6 +583,102 @@ export const LEARNING_MODULES = [
       `<form class="form"><label for="name">Nama lengkap</label><input id="name" name="name" autocomplete="name" required><button type="submit">Simpan profil</button></form>`,
       `'use client'\n\nexport default function ProfileForm() {\n  return <form className="form"><label htmlFor="name">Nama lengkap</label><input id="name" name="name" autoComplete="name" required /><button>Simpan profil</button></form>\n}`,
       `.form { display: grid; gap: 10px; max-width: 480px; }\n.form input { min-height: 48px; padding-inline: 14px; border: 1px solid #778279; border-radius: 12px; }\n.form button { justify-self: start; margin-top: 8px; }`
+    ),
+  },
+  {
+    id: 'micro-interactions', title: 'Micro-Interactions & States', category: 'ux', icon: 'touch_app', level: 'Menengah', duration: '18 menit',
+    summary: 'Umpan balik visual kecil saat kursor di-hover, ditekan, fokus, atau sedang memuat.',
+    usage: 'Terapkan transisi halus (150ms-250ms) pada elemen interaktif untuk memberi kesan aplikasi yang hidup.',
+    anatomy: ['Default State', 'Hover State', 'Focus-Visible Ring', 'Active / Pressed State', 'Disabled State'],
+    principles: ['Durasi animasi idealnya di bawah 300ms.', 'Gunakan transition-property spesifik alih-alih transition: all.', 'Hargai preferensi prefers-reduced-motion.'],
+    code: makeCode(
+      `<button class="interactive-btn">Klik Saya</button>`,
+      `export default function InteractiveButton() {\n  return <button className="interactiveBtn">Klik Saya</button>\n}`,
+      `.interactive-btn { padding: 12px 24px; border-radius: 12px; background: var(--primary); color: white; border: 0; transition: transform 0.15s ease, background-color 0.15s ease; }\n.interactive-btn:hover { transform: translateY(-2px); background: #005321; }\n.interactive-btn:active { transform: translateY(0); }`
+    ),
+  },
+  {
+    id: 'dark-mode-tokens', title: 'Dark Mode Architecture', category: 'ux', icon: 'dark_mode', level: 'Lanjutan', duration: '20 menit',
+    summary: 'Arsitektur design token untuk mendukung mode gelap (dark mode) dan terang secara dinamis.',
+    usage: 'Gunakan CSS custom properties pada tingkat :root dan [data-theme="dark"].',
+    anatomy: ['Semantic Surface Tokens', 'On-Surface Contrast Tokens', 'Primary Accent Tokens', 'Elevation Shadows'],
+    principles: ['Jangan gunakan warna hitam murni #000000 untuk surface gelap; gunakan dark slate gray.', 'Pastikan kontras teks tetap memenuhi tingkat WCAG AA.', 'Simpan preferensi tema di localStorage.'],
+    code: makeCode(
+      `:root { --surface: #ffffff; --on-surface: #121c28; }\n[data-theme="dark"] { --surface: #121c28; --on-surface: #f8f9ff; }`,
+      `export default function ThemeToggle({ dark, setDark }) {\n  return <button onClick={() => setDark(!dark)}>{dark ? '🌙 Dark' : '☀️ Light'}</button>\n}`,
+      `:root { --surface: #ffffff; --text: #121c28; }\n@media (prefers-color-scheme: dark) { :root { --surface: #121c28; --text: #f8f9ff; } }`
+    ),
+  },
+  {
+    id: 'css-custom-props', title: 'CSS Custom Properties', category: 'html-css', icon: 'code', level: 'Dasar', duration: '18 menit',
+    summary: 'Variabel CSS bawaan browser untuk menyimpan nilai warna, ukuran, dan spacing yang reusable.',
+    usage: 'Deklarasikan variabel di dalam selector :root agar dapat diakses oleh seluruh style sheet.',
+    anatomy: ['Variable Declaration (--name)', 'var() Function', 'Fallback Value', 'Scope Inheritance'],
+    principles: ['Beri nama variabel berdasarkan fungsi semantik (--color-primary) bukan nilai literal (--green).', 'Sediakan nilai fallback di dalam var().', 'Gunakan variabel untuk tema yang mudah dikustomisasi.'],
+    code: makeCode(
+      `:root {\n  --brand-color: #006e2f;\n  --radius-lg: 16px;\n}\n\n.card {\n  border-radius: var(--radius-lg);\n  border-top: 4px solid var(--brand-color);\n}`,
+      `export default function CustomPropsDemo() {\n  return <div style={{ '--accent': '#22c55e' }} className="box">Demo Variable</div>\n}`,
+      `:root { --brand-color: #006e2f; --radius-lg: 16px; }\n.card { border-radius: var(--radius-lg); border-top: 4px solid var(--brand-color); }`
+    ),
+  },
+  {
+    id: 'css-animations', title: 'CSS Keyframes & Motion', category: 'html-css', icon: 'animation', level: 'Menengah', duration: '22 menit',
+    summary: 'Animasi CSS native menggunakan @keyframes dan transitions untuk efek visual tanpa beban JavaScript.',
+    usage: 'Gunakan untuk loader, pendaran glow, transisi modal, dan fade-in elemen.',
+    anatomy: ['@keyframes Definition', 'animation-name', 'animation-duration', 'animation-timing-function'],
+    principles: ['Animasi hanya properti transform dan opacity untuk performa GPU 60fps.', 'Hindari memicu reflow layout dengan menganimasikan width/height.', 'Berikan jeda animasi yang nyaman.'],
+    code: makeCode(
+      `<div class="pulse-badge">Live</div>`,
+      `export default function PulseBadge() {\n  return <div className="pulseBadge">Live</div>\n}`,
+      `.pulse-badge { display: inline-block; padding: 4px 12px; background: #22c55e; color: white; border-radius: 99px; animation: pulseGlow 2s infinite; }\n@keyframes pulseGlow { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }`
+    ),
+  },
+  {
+    id: 'next-image-optimization', title: 'Next.js Image & Font', category: 'nextjs', icon: 'image', level: 'Menengah', duration: '20 menit',
+    summary: 'Optimasi gambar otomatis (WebP/AVIF) dan font bawaan Next.js untuk mencegah Layout Shift (CLS).',
+    usage: 'Gunakan komponen <Image> dari next/image alih-alih tag <img> bawaan.',
+    anatomy: ['src & alt', 'width & height', 'priority / loading', 'next/font Google Fonts'],
+    principles: ['Selalu tentukan width dan height atau gunakan fill.', 'Gunakan atribut priority untuk gambar hero di fold pertama.', 'Sediakan alt text yang informatif.'],
+    code: makeCode(
+      `<img src="/hero.webp" alt="Visual Pembelajaran" width="800" height="400" loading="eager">`,
+      `import Image from 'next/image'\n\nexport default function HeroVisual() {\n  return <Image src="/hero.webp" alt="Visual Pembelajaran" width={800} height={400} priority />\n}`,
+      `.hero-img { width: 100%; height: auto; border-radius: 20px; object-fit: cover; }`
+    ),
+  },
+  {
+    id: 'next-api-routes', title: 'Server Actions & API Routes', category: 'nextjs', icon: 'api', level: 'Lanjutan', duration: '26 menit',
+    summary: 'Eksekusi logika backend, mutasi database, dan pembuatan endpoint API di dalam Next.js App Router.',
+    usage: 'Gunakan Server Actions dengan directive "use server" atau file route.js untuk REST API.',
+    anatomy: ['"use server" Directive', 'Form Action Handler', 'route.js (GET/POST)', 'revalidatePath'],
+    principles: ['Selalu validasi input di server menggunakan Zod.', 'Jangan pernah mempercayai data dari klien.', 'Gunakan try/catch dan kirim pesan error yang aman.'],
+    code: makeCode(
+      `<form action="/api/submit" method="POST"><input name="email"><button type="submit">Kirim</button></form>`,
+      `// app/actions.js\n'use server'\n\nexport async function createUser(formData) {\n  const email = formData.get('email')\n  // simpan ke database\n}`,
+      `// app/api/user/route.js\nexport async function GET() {\n  return Response.json({ status: 'ok' })\n}`
+    ),
+  },
+  {
+    id: 'screen-readers', title: 'Screen Reader & ARIA', category: 'a11y', icon: 'record_voice_over', level: 'Menengah', duration: '22 menit',
+    summary: 'Atribut ARIA (Accessible Rich Internet Applications) untuk membantu pengguna pembaca layar (NVDA/VoiceOver).',
+    usage: 'Tambahkan aria-label, aria-expanded, aria-hidden, dan aria-live pada komponen kustom.',
+    anatomy: ['aria-label', 'aria-expanded', 'aria-hidden="true"', 'aria-live="polite"'],
+    principles: ['Aturan pertama ARIA: Gunakan HTML semantik bawaan jika ada.', 'Jangan sembunyikan informasi penting hanya dari screen reader.', 'Uji dengan pembaca layar asli.'],
+    code: makeCode(
+      `<button aria-label="Tutup Dialog" aria-expanded="true">×</button>`,
+      `export default function CloseButton({ open, toggle }) {\n  return <button aria-label="Tutup Dialog" aria-expanded={open} onClick={toggle}>×</button>\n}`,
+      `.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0; }`
+    ),
+  },
+  {
+    id: 'color-contrast', title: 'Color Contrast & A11y', category: 'a11y', icon: 'visibility', level: 'Dasar', duration: '16 menit',
+    summary: 'Rasio kontras warna minimal 4.5:1 untuk teks biasa dan 3:1 untuk teks besar sesuai standar WCAG 2.1 AA.',
+    usage: 'Pastikan warna teks di atas latar belakang mudah dibaca oleh semua orang termasuk penderita buta warna.',
+    anatomy: ['Contrast Ratio (4.5:1)', 'WCAG AA Standard', 'Focus Visible Ring', 'Colorblind Friendly Palette'],
+    principles: ['Jangan gunakan warna hijau/merah saja sebagai satu-satunya penanda status; sertakan ikon atau teks.', 'Focus ring harus memiliki kontras tinggi.', 'Periksa dengan kalkulator contrast ratio.'],
+    code: makeCode(
+      `<div class="high-contrast-card">Teks Mudah Dibaca</div>`,
+      `export default function HighContrastBox() {\n  return <div className="highContrastBox">Teks Mudah Dibaca</div>\n}`,
+      `.high-contrast-card { background: #006e2f; color: #ffffff; padding: 16px; border-radius: 12px; font-weight: 700; }`
     ),
   },
   {

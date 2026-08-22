@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { HashRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { HashRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom'
 import Beranda from './pages/Beranda'
 import DetailReact from './pages/DetailReact'
 import Dashboard from './pages/Dashboard'
@@ -8,10 +8,12 @@ import DetailUIUX from './pages/DetailUIUX'
 import Pencapaian from './pages/Pencapaian'
 import ModulPembelajaran from './pages/ModulPembelajaran'
 import LatihanSoal from './pages/LatihanSoal'
+import LoginPage from './pages/LoginPage'
 import Sidebar from './components/Sidebar'
 import MobileHeader from './components/MobileHeader'
 import BottomNav from './components/BottomNav'
 import NotFound from './pages/NotFound'
+import { useAuth } from './data/userState'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -21,6 +23,14 @@ function ScrollToTop() {
   }, [pathname])
 
   return null
+}
+
+function ProtectedRoute({ children }) {
+  const { isLoggedIn } = useAuth()
+  if (!isLoggedIn) {
+    return <Navigate to="/login" replace />
+  }
+  return children
 }
 
 function AppLayout({ children }) {
@@ -43,15 +53,18 @@ export default function App() {
     <HashRouter>
       <ScrollToTop />
       <Routes>
-        <Route path="/" element={<AppLayout><Beranda /></AppLayout>} />
-        <Route path="/modul" element={<AppLayout><ModulPembelajaran /></AppLayout>} />
-        <Route path="/latihan-soal" element={<AppLayout><LatihanSoal /></AppLayout>} />
-        <Route path="/detail-react" element={<AppLayout><DetailReact /></AppLayout>} />
-        <Route path="/dashboard" element={<AppLayout><Dashboard /></AppLayout>} />
-        <Route path="/belajar" element={<MobileBelajar />} />
-        <Route path="/detail-uiux" element={<AppLayout><DetailUIUX /></AppLayout>} />
-        <Route path="/pencapaian" element={<AppLayout><Pencapaian /></AppLayout>} />
-        <Route path="*" element={<AppLayout><NotFound /></AppLayout>} />
+        <Route path="/login" element={<LoginPage />} />
+        
+        {/* Protected Routes — Redirect to /login if not authenticated */}
+        <Route path="/" element={<ProtectedRoute><AppLayout><Beranda /></AppLayout></ProtectedRoute>} />
+        <Route path="/modul" element={<ProtectedRoute><AppLayout><ModulPembelajaran /></AppLayout></ProtectedRoute>} />
+        <Route path="/latihan-soal" element={<ProtectedRoute><AppLayout><LatihanSoal /></AppLayout></ProtectedRoute>} />
+        <Route path="/detail-react" element={<ProtectedRoute><AppLayout><DetailReact /></AppLayout></ProtectedRoute>} />
+        <Route path="/dashboard" element={<ProtectedRoute><AppLayout><Dashboard /></AppLayout></ProtectedRoute>} />
+        <Route path="/belajar" element={<ProtectedRoute><MobileBelajar /></ProtectedRoute>} />
+        <Route path="/detail-uiux" element={<ProtectedRoute><AppLayout><DetailUIUX /></AppLayout></ProtectedRoute>} />
+        <Route path="/pencapaian" element={<ProtectedRoute><AppLayout><Pencapaian /></AppLayout></ProtectedRoute>} />
+        <Route path="*" element={<ProtectedRoute><AppLayout><NotFound /></AppLayout></ProtectedRoute>} />
       </Routes>
     </HashRouter>
   )
