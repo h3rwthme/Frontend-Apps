@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { HashRouter, Routes, Route, useLocation } from 'react-router-dom'
 import Beranda from './pages/Beranda'
 import DetailReact from './pages/DetailReact'
 import Dashboard from './pages/Dashboard'
@@ -40,7 +40,7 @@ function AppLayout({ children }) {
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<AppLayout><Beranda /></AppLayout>} />
@@ -53,6 +53,6 @@ export default function App() {
         <Route path="/pencapaian" element={<AppLayout><Pencapaian /></AppLayout>} />
         <Route path="*" element={<AppLayout><NotFound /></AppLayout>} />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   )
 }
