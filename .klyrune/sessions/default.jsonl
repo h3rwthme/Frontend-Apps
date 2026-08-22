@@ -1,0 +1,8 @@
+{"role":"user","content":"test"}
+{"role":"assistant","content":"⚠ Turn interrupted: Gateway error 401: Invalid API key.\n\nThe agent stopped mid-task (network or provider issue). Type \"continue\" to resume where it left off."}
+{"role":"user","content":"ox"}
+{"role":"assistant","content":"⚠ Turn interrupted: Gateway error 401: Invalid API key.\n\nThe agent stopped mid-task (network or provider issue). Type \"continue\" to resume where it left off."}
+{"role":"user","content":"test"}
+{"role":"assistant","content":"⚠ Turn interrupted: Gateway error 404: No active credentials for provider: openai.\n\nThe agent stopped mid-task (network or provider issue). Type \"continue\" to resume where it left off."}
+{"role":"user","content":"tes"}
+{"role":"assistant","content":"⚠ Turn interrupted: Gateway error 404: No active credentials for provider: openai.\n\nThe agent stopped mid-task (network or provider issue). Type \"continue\" to resume where it left off."}
