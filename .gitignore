@@ -14,7 +14,7 @@ dist-ssr
 
 # Editor directories and files
 .vscode/*
-.klyrune/*
+.klyrune/sessions/*
 
 !.vscode/extensions.json
 .idea
