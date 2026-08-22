@@ -12,9 +12,11 @@ dist
 dist-ssr
 *.local
 
+# Klyrune
+.klyrune/
+
 # Editor directories and files
 .vscode/*
-.klyrune/sessions/*
 
 !.vscode/extensions.json
 .idea
